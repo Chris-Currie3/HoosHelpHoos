@@ -133,6 +133,29 @@
             font-weight: 500;
         }
 
+        .calendar-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #E57200;
+            border: 2px solid #E57200;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .calendar-btn:hover {
+            background: #E57200;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
         .logout-btn {
             width: 100%;
             padding: 15px;
@@ -143,7 +166,7 @@
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 30px;
+            margin-top: 15px;
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -154,6 +177,46 @@
 
         .logout-btn:active {
             transform: translateY(0);
+        }
+
+        .meetings-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .meetings-title {
+            color: #232D4B;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .meeting-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #E57200;
+        }
+
+        .meeting-card p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .meeting-card strong {
+            color: #232D4B;
+        }
+
+        .no-meetings {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
         }
 
         @media (max-width: 600px) {
@@ -197,6 +260,14 @@
 
         <div id="interestsContainer"></div>
 
+        <!-- Upcoming Meetings Section -->
+        <div class="meetings-section" id="meetingsSection">
+            <div class="meetings-title">📅 Upcoming Meetings</div>
+            <div id="meetingsList">
+                <p class="no-meetings">Loading meetings...</p>
+            </div>
+        </div>
+
         <div class="message">
             <h2>Thank You for Being a Mentor! 🌟</h2>
             <p>
@@ -220,6 +291,7 @@
             </div>
         </div>
 
+        <a href="mentor-calendar.html" class="calendar-btn">📅 Manage My Availability</a>
         <button class="logout-btn" id="logoutBtn">Sign Out</button>
     </div>
 

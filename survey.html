@@ -210,176 +210,14 @@
 
         <div class="survey-intro">
             <h2>Quick Compatibility Survey</h2>
-            <p>Answer these 5 questions to help us match you with compatible mentors/mentees. Rate each on a scale of 1-5.</p>
+            <p id="surveyDescription">Answer these 5 questions to help us match you with compatible mentors/mentees. Rate each on a scale of 1-5.</p>
         </div>
 
         <div id="errorMessage" class="error-message"></div>
 
         <form id="surveyForm">
-            <!-- Question 1: Greek Life -->
-            <div class="question-group">
-                <label class="question-label">
-                    1. How involved are you in Greek life?
-                </label>
-                <div class="scale-options">
-                    <div class="scale-option">
-                        <label>1</label>
-                        <input type="radio" name="greekLife" value="1" data-value="1" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>2</label>
-                        <input type="radio" name="greekLife" value="2" data-value="2" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>3</label>
-                        <input type="radio" name="greekLife" value="3" data-value="3" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>4</label>
-                        <input type="radio" name="greekLife" value="4" data-value="4" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>5</label>
-                        <input type="radio" name="greekLife" value="5" data-value="5" required>
-                    </div>
-                </div>
-                <div class="scale-labels">
-                    <span class="scale-label">Not involved at all</span>
-                    <span class="scale-label">Very active member</span>
-                </div>
-            </div>
-
-            <!-- Question 2: Club Involvement -->
-            <div class="question-group">
-                <label class="question-label">
-                    2. How many clubs/organizations are you actively involved in?
-                </label>
-                <div class="scale-options">
-                    <div class="scale-option">
-                        <label>1</label>
-                        <input type="radio" name="clubInvolvement" value="1" data-value="1" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>2</label>
-                        <input type="radio" name="clubInvolvement" value="2" data-value="2" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>3</label>
-                        <input type="radio" name="clubInvolvement" value="3" data-value="3" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>4</label>
-                        <input type="radio" name="clubInvolvement" value="4" data-value="4" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>5</label>
-                        <input type="radio" name="clubInvolvement" value="5" data-value="5" required>
-                    </div>
-                </div>
-                <div class="scale-labels">
-                    <span class="scale-label">0-1 clubs</span>
-                    <span class="scale-label">5+ clubs</span>
-                </div>
-            </div>
-
-            <!-- Question 3: Nightlife -->
-            <div class="question-group">
-                <label class="question-label">
-                    3. How often do you participate in nightlife activities?
-                </label>
-                <div class="scale-options">
-                    <div class="scale-option">
-                        <label>1</label>
-                        <input type="radio" name="nightlife" value="1" data-value="1" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>2</label>
-                        <input type="radio" name="nightlife" value="2" data-value="2" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>3</label>
-                        <input type="radio" name="nightlife" value="3" data-value="3" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>4</label>
-                        <input type="radio" name="nightlife" value="4" data-value="4" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>5</label>
-                        <input type="radio" name="nightlife" value="5" data-value="5" required>
-                    </div>
-                </div>
-                <div class="scale-labels">
-                    <span class="scale-label">Rarely/Never</span>
-                    <span class="scale-label">Multiple times a week</span>
-                </div>
-            </div>
-
-            <!-- Question 4: Academic Priority -->
-            <div class="question-group">
-                <label class="question-label">
-                    4. How would you rate your academic focus/priority?
-                </label>
-                <div class="scale-options">
-                    <div class="scale-option">
-                        <label>1</label>
-                        <input type="radio" name="academicFocus" value="1" data-value="1" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>2</label>
-                        <input type="radio" name="academicFocus" value="2" data-value="2" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>3</label>
-                        <input type="radio" name="academicFocus" value="3" data-value="3" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>4</label>
-                        <input type="radio" name="academicFocus" value="4" data-value="4" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>5</label>
-                        <input type="radio" name="academicFocus" value="5" data-value="5" required>
-                    </div>
-                </div>
-                <div class="scale-labels">
-                    <span class="scale-label">Balanced/Social focus</span>
-                    <span class="scale-label">Academics first priority</span>
-                </div>
-            </div>
-
-            <!-- Question 5: Study Habits -->
-            <div class="question-group">
-                <label class="question-label">
-                    5. What are your typical study habits?
-                </label>
-                <div class="scale-options">
-                    <div class="scale-option">
-                        <label>1</label>
-                        <input type="radio" name="studyHabits" value="1" data-value="1" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>2</label>
-                        <input type="radio" name="studyHabits" value="2" data-value="2" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>3</label>
-                        <input type="radio" name="studyHabits" value="3" data-value="3" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>4</label>
-                        <input type="radio" name="studyHabits" value="4" data-value="4" required>
-                    </div>
-                    <div class="scale-option">
-                        <label>5</label>
-                        <input type="radio" name="studyHabits" value="5" data-value="5" required>
-                    </div>
-                </div>
-                <div class="scale-labels">
-                    <span class="scale-label">Study in groups/socially</span>
-                    <span class="scale-label">Study alone/quietly</span>
-                </div>
-            </div>
+            <!-- Questions will be dynamically loaded based on role -->
+            <div id="questionsContainer"></div>
 
             <button type="submit" class="submit-btn" id="submitBtn">Complete Profile</button>
         </form>
@@ -398,7 +236,75 @@
         let currentUser = null;
         let userRole = null;
 
-        // Check if user is authenticated
+        // Questions for mentees (future-oriented, "plan to")
+        const menteeQuestions = [
+            {
+                id: 'greekLife',
+                question: 'How interested are you in joining Greek life?',
+                leftLabel: 'Not interested at all',
+                rightLabel: 'Very interested'
+            },
+            {
+                id: 'clubInvolvement',
+                question: 'How many clubs/organizations do you plan to join?',
+                leftLabel: '0-1 clubs',
+                rightLabel: '5+ clubs'
+            },
+            {
+                id: 'nightlife',
+                question: 'How often do you plan to participate in nightlife activities?',
+                leftLabel: 'Rarely/Never',
+                rightLabel: 'Multiple times a week'
+            },
+            {
+                id: 'academicFocus',
+                question: 'How would you rate your planned academic focus/priority?',
+                leftLabel: 'Balanced/Social focus',
+                rightLabel: 'Academics first priority'
+            },
+            {
+                id: 'studyHabits',
+                question: 'What are your preferred study habits?',
+                leftLabel: 'Study in groups/socially',
+                rightLabel: 'Study alone/quietly'
+            }
+        ];
+
+        // Questions for mentors (current experience, "are you")
+        const mentorQuestions = [
+            {
+                id: 'greekLife',
+                question: 'How involved are you in Greek life?',
+                leftLabel: 'Not involved at all',
+                rightLabel: 'Very active member'
+            },
+            {
+                id: 'clubInvolvement',
+                question: 'How many clubs/organizations are you actively involved in?',
+                leftLabel: '0-1 clubs',
+                rightLabel: '5+ clubs'
+            },
+            {
+                id: 'nightlife',
+                question: 'How often do you participate in nightlife activities?',
+                leftLabel: 'Rarely/Never',
+                rightLabel: 'Multiple times a week'
+            },
+            {
+                id: 'academicFocus',
+                question: 'How would you rate your academic focus/priority?',
+                leftLabel: 'Balanced/Social focus',
+                rightLabel: 'Academics first priority'
+            },
+            {
+                id: 'studyHabits',
+                question: 'What are your typical study habits?',
+                leftLabel: 'Study in groups/socially',
+                rightLabel: 'Study alone/quietly'
+            }
+        ];
+
+        // Check if user is authenticated and load appropriate questions
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
@@ -406,11 +312,60 @@
                 const userDoc = await getDoc(doc(db, 'users', user.uid));
                 if (userDoc.exists()) {
                     userRole = userDoc.data().role;
+                    loadQuestions(userRole);
                 }
             } else {
                 window.location.href = 'index.html';
             }
         });
+
+        function loadQuestions(role) {
+            const questions = role === 'mentee' ? menteeQuestions : mentorQuestions;
+            const container = document.getElementById('questionsContainer');
+            
+            // Update description based on role
+            if (role === 'mentee') {
+                document.getElementById('surveyDescription').textContent = 
+                    'Answer these 5 questions about your plans and preferences to help us match you with compatible mentors. Rate each on a scale of 1-5.';
+            }
+            
+            questions.forEach((q, index) => {
+                const questionHTML = `
+                    <div class="question-group">
+                        <label class="question-label">
+                            ${index + 1}. ${q.question}
+                        </label>
+                        <div class="scale-options">
+                            <div class="scale-option">
+                                <label>1</label>
+                                <input type="radio" name="${q.id}" value="1" data-value="1" required>
+                            </div>
+                            <div class="scale-option">
+                                <label>2</label>
+                                <input type="radio" name="${q.id}" value="2" data-value="2" required>
+                            </div>
+                            <div class="scale-option">
+                                <label>3</label>
+                                <input type="radio" name="${q.id}" value="3" data-value="3" required>
+                            </div>
+                            <div class="scale-option">
+                                <label>4</label>
+                                <input type="radio" name="${q.id}" value="4" data-value="4" required>
+                            </div>
+                            <div class="scale-option">
+                                <label>5</label>
+                                <input type="radio" name="${q.id}" value="5" data-value="5" required>
+                            </div>
+                        </div>
+                        <div class="scale-labels">
+                            <span class="scale-label">${q.leftLabel}</span>
+                            <span class="scale-label">${q.rightLabel}</span>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionHTML;
+            });
+        }
 
         const surveyForm = document.getElementById('surveyForm');
         const errorMessage = document.getElementById('errorMessage');
