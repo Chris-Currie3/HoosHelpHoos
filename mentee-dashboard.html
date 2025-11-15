@@ -136,6 +136,118 @@
             color: #232D4B;
         }
 
+        /* Email Notification */
+        .email-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-left: 5px solid #E57200;
+            z-index: 10001;
+            display: none;
+            max-width: 500px;
+            width: 90%;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .email-notification.show {
+            display: block;
+        }
+
+        .email-notification .close-notif {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .email-notification .close-notif:hover {
+            color: #E57200;
+        }
+
+        .email-notification h3 {
+            color: #232D4B;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .email-address {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            color: #E57200;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #E57200;
+            word-break: break-all;
+        }
+
+        .email-notification p {
+            color: #666;
+            line-height: 1.8;
+            margin: 15px 0;
+            font-size: 1.05em;
+        }
+
+        .copy-email-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .copy-email-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .copy-email-btn.copied {
+            background: #28a745;
+        }
+
+        .email-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+        }
+
+        .email-overlay.show {
+            display: block;
+        }
+
         /* Meetings Section */
         .meetings-section {
             background: white;
@@ -472,6 +584,11 @@
                 left: 10px;
                 max-width: none;
             }
+
+            .email-notification {
+                width: 95%;
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
@@ -514,6 +631,17 @@
         <p style="margin-top: 15px; color: #28a745; font-weight: 600;">Your meeting has been added to "My Upcoming Meetings" above!</p>
     </div>
 
+    <!-- Email Notification -->
+    <div class="email-overlay" id="emailOverlay" onclick="closeEmailNotification()"></div>
+    <div id="emailNotification" class="email-notification">
+        <button class="close-notif" onclick="closeEmailNotification()">&times;</button>
+        <h3>📧 Contact <span id="emailMentorName"></span></h3>
+        <p>You can reach out to this mentor via email:</p>
+        <div class="email-address" id="emailAddress"></div>
+        <p style="font-size: 0.95em; color: #888;">Copy this email address and reach out to schedule a meeting or ask any questions!</p>
+        <button class="copy-email-btn" id="copyEmailBtn" onclick="copyEmail()">📋 Copy Email Address</button>
+    </div>
+
     <!-- Scheduling Modal -->
     <div id="schedulingModal" class="modal">
         <div class="modal-content">
@@ -534,9 +662,60 @@
     <!-- JavaScript -->
     <script type="module" src="js/mentee-dashboard.js"></script>
     <script>
-        // Global function to close notification
+        // Global functions for notifications
         function closeNotification() {
             document.getElementById('successNotification').classList.remove('show');
+        }
+
+        function closeEmailNotification() {
+            document.getElementById('emailNotification').classList.remove('show');
+            document.getElementById('emailOverlay').classList.remove('show');
+        }
+
+        let currentEmail = '';
+
+        function showEmailNotification(email, name) {
+            currentEmail = email;
+            document.getElementById('emailMentorName').textContent = name;
+            document.getElementById('emailAddress').textContent = email;
+            document.getElementById('emailNotification').classList.add('show');
+            document.getElementById('emailOverlay').classList.add('show');
+            
+            // Reset button state
+            const copyBtn = document.getElementById('copyEmailBtn');
+            copyBtn.textContent = '📋 Copy Email Address';
+            copyBtn.classList.remove('copied');
+        }
+
+        async function copyEmail() {
+            const copyBtn = document.getElementById('copyEmailBtn');
+            
+            try {
+                await navigator.clipboard.writeText(currentEmail);
+                copyBtn.textContent = '✅ Email Copied!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy Email Address';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = currentEmail;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                copyBtn.textContent = '✅ Email Copied!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy Email Address';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }
         }
     </script>
 </body>

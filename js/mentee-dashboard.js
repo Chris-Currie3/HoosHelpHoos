@@ -184,12 +184,12 @@ function displayMatches(matches) {
         });
     });
 
-    // Add click handlers for contact buttons - shows email in alert
+    // Add click handlers for contact buttons - shows nice popup instead of alert
     document.querySelectorAll('.contact-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const email = e.target.dataset.mentorEmail;
             const name = e.target.dataset.mentorName;
-            alert(`📧 ${name}'s Email:\n\n${email}\n\nYou can copy this email address and reach out to them directly!`);
+            showEmailNotification(email, name);
         });
     });
 }
