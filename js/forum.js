@@ -19,11 +19,15 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         await loadUserData(user.uid);
-        await loadPosts();
     } else {
-        window.location.href = 'signin.html';
+        currentUser = null; // viewing as guest
+        document.getElementById("userName").textContent = "Guest";
     }
+
+    // ALWAYS load posts for both guests + signed-in users
+    await loadPosts();
 });
+
 
 // Load user data
 async function loadUserData(userId) {
@@ -76,6 +80,10 @@ document.getElementById('searchInput').addEventListener('keypress', (e) => {
 
 // Create post modal
 document.getElementById('createPostBtn').addEventListener('click', () => {
+    if (!currentUser) {
+        window.location.href = 'signin.html?next=forum.html';
+        return;
+    }
     document.getElementById('createPostModal').style.display = 'block';
 });
 

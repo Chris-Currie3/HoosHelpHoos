@@ -10,7 +10,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // Sign out user on page load to clear session
-signOut(auth).catch(() => {});
+//signOut(auth).catch(() => {});
 
 // DOM Elements
 const signInForm = document.getElementById('signInForm');
@@ -119,11 +119,25 @@ signInForm.addEventListener('submit', async (e) => {
             const userData = userDoc.data();
             
             // Redirect based on role
-            if (userData.role === 'mentee') {
-                window.location.href = 'mentee-dashboard.html';
-            } else {
-                window.location.href = 'mentor-dashboard.html';
-            }
+            const params = new URLSearchParams(window.location.search);
+const next = params.get("next");
+
+if (next) {
+    window.location.href = next;
+    return;
+}
+
+if (!userData.surveyCompleted) {
+    window.location.href = 'survey.html';
+    return;
+}
+
+if (userData.role === 'mentee') {
+    window.location.href = 'mentee-dashboard.html';
+} else {
+    window.location.href = 'mentor-dashboard.html';
+}
+
         } else {
             showError('User data not found. Please contact support.');
         }
