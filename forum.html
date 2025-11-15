@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - Community Forum</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: -1px;
+            text-decoration: none;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: #232D4B;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #E57200;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            color: #232D4B;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #E57200;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c46200;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #E57200;
+        }
+
+        .search-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .category-tabs {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+
+        .category-tab {
+            padding: 12px 25px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #232D4B;
+        }
+
+        .category-tab:hover {
+            border-color: #E57200;
+            background: #fff5f0;
+        }
+
+        .category-tab.active {
+            border-color: #E57200;
+            background: linear-gradient(135deg, rgba(229, 114, 0, 0.1) 0%, rgba(35, 45, 75, 0.05) 100%);
+            color: #E57200;
+        }
+
+        .category-icon {
+            font-size: 1.3em;
+        }
+
+        .posts-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .posts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #232D4B;
+            font-size: 1.8em;
+        }
+
+        .create-post-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .create-post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .post-card {
+            padding: 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            border-color: #E57200;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .author-avatar {
+            width: 35px;
+            height: 35px;
+            background: #E57200;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .post-category-badge {
+            padding: 5px 12px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .post-title {
+            color: #232D4B;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .post-content {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 25px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .agree-disagree-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        .agree-btn, .disagree-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .agree-btn {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .agree-btn:hover {
+            background: #c3e6cb;
+            transform: scale(1.05);
+        }
+
+        .agree-btn.active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .disagree-btn {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .disagree-btn:hover {
+            background: #f5c6cb;
+            transform: scale(1.05);
+        }
+
+        .disagree-btn.active {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .count {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #E57200;
+        }
+
+        .modal-title {
+            color: #232D4B;
+            font-size: 2em;
+            margin-bottom: 25px;
+            clear: both;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #232D4B;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #E57200;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-post-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .no-posts {
+            text-align: center;
+            color: #999;
+            padding: 60px 20px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="home.html" class="logo">Hoos<span class="logo-accent">Help</span>Hoos</a>
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">Home</a>
+                <a href="forum.html" class="nav-link">Forum</a>
+            </div>
+            <div class="nav-right">
+                <span class="user-name" id="userName">Loading...</span>
+                <button class="logout-btn" id="logoutBtn">Sign Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search posts by title or content...">
+                <button class="search-btn" id="searchBtn">🔍 Search</button>
+            </div>
+        </div>
+
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">
+                <span class="category-icon">🌐</span>
+                All Posts
+            </div>
+            <div class="category-tab" data-category="social">
+                <span class="category-icon">🎉</span>
+                Social
+            </div>
+            <div class="category-tab" data-category="clubs">
+                <span class="category-icon">⚽</span>
+                Clubs
+            </div>
+            <div class="category-tab" data-category="academics">
+                <span class="category-icon">📚</span>
+                Academics
+            </div>
+            <div class="category-tab" data-category="career">
+                <span class="category-icon">💼</span>
+                Career Preparation
+            </div>
+        </div>
+
+        <div class="posts-section">
+            <div class="posts-header">
+                <h2 class="section-title" id="categoryTitle">All Posts</h2>
+                <button class="create-post-btn" id="createPostBtn">+ Create Post</button>
+            </div>
+
+            <div id="postsContainer">
+                <div class="no-posts">Loading posts...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="modal-title">Create a New Post</h2>
+
+            <form id="createPostForm">
+                <div class="form-group">
+                    <label for="postCategory">Category *</label>
+                    <select id="postCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="social">Social</option>
+                        <option value="clubs">Clubs</option>
+                        <option value="academics">Academics</option>
+                        <option value="career">Career Preparation</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="postTitle">Title *</label>
+                    <input type="text" id="postTitle" placeholder="Enter your question or topic..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postContent">Content *</label>
+                    <textarea id="postContent" placeholder="Provide more details..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-post-btn">Post Question</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/forum.js"></script>
+</body>
+</html>

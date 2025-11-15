@@ -385,9 +385,17 @@
     <nav>
         <div class="nav-container">
             <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
-            <div class="nav-buttons">
-                <a href="signin.html" class="btn btn-secondary">Sign In</a>
-                <a href="signin.html" class="btn btn-primary">Get Started</a>
+            <div style="display: flex; align-items: center; gap: 30px;">
+                <div style="display: flex; gap: 20px;">
+                    <a href="forum.html?category=social" style="text-decoration: none; color: #232D4B; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#E57200'" onmouseout="this.style.color='#232D4B'">🎉 Social</a>
+                    <a href="forum.html?category=clubs" style="text-decoration: none; color: #232D4B; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#E57200'" onmouseout="this.style.color='#232D4B'">⚽ Clubs</a>
+                    <a href="forum.html?category=academics" style="text-decoration: none; color: #232D4B; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#E57200'" onmouseout="this.style.color='#232D4B'">📚 Academics</a>
+                    <a href="forum.html?category=career" style="text-decoration: none; color: #232D4B; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#E57200'" onmouseout="this.style.color='#232D4B'">💼 Career</a>
+                </div>
+                <div class="nav-buttons">
+                    <a href="signin.html" class="btn btn-secondary">Sign In</a>
+                    <a href="signin.html" class="btn btn-primary">Get Started</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -396,7 +404,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>Find Your Perfect <span class="highlight">Mentor</span> at UVA</h1>
-            <p>Connect with experienced students who share your interests, understand your goals, and can help guide your journey at the University of Virginia.</p>
+            <p>Connect with experienced students through 1-on-1 mentorship matched to your interests and goals. Plus, join our community forum to ask questions, share experiences, and get advice from the entire UVA community.</p>
             <div class="hero-buttons">
                 <a href="signin.html" class="btn btn-primary">Join Now</a>
                 <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
@@ -413,7 +421,7 @@
     <section class="features-section">
         <div class="features-container">
             <h2 class="section-title">Why Choose HoosHelpHoos?</h2>
-            <p class="section-subtitle">Our smart matching system connects you with mentors who truly understand your UVA experience</p>
+            <p class="section-subtitle">Get personalized 1-on-1 mentorship AND connect with the entire UVA community through our forum</p>
             
             <div class="features-grid">
                 <div class="feature-card">
@@ -447,10 +455,54 @@
                 </div>
                 
                 <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Community Forum</h3>
+                    <p>Ask questions and get answers from the entire UVA community. Share experiences in Social, Clubs, Academics, and Career topics.</p>
+                </div>
+                
+                <div class="feature-card">
                     <div class="feature-icon">🔒</div>
                     <h3>Safe & Secure</h3>
                     <p>UVA email verification ensures you're connecting with real students in a trusted environment.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Forum Section -->
+    <section class="features-section" style="background: #f8f9fa;">
+        <div class="features-container">
+            <h2 class="section-title">Community Forum</h2>
+            <p class="section-subtitle">Ask questions, share experiences, and connect with the UVA community</p>
+            
+            <div class="features-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <a href="forum.html?category=social" class="feature-card" style="text-decoration: none; color: inherit;">
+                    <div class="feature-icon">🎉</div>
+                    <h3>Social</h3>
+                    <p>Discuss campus events, social life, Greek life, and making friends at UVA.</p>
+                </a>
+                
+                <a href="forum.html?category=clubs" class="feature-card" style="text-decoration: none; color: inherit;">
+                    <div class="feature-icon">⚽</div>
+                    <h3>Clubs</h3>
+                    <p>Find clubs, share experiences, and connect with student organizations.</p>
+                </a>
+                
+                <a href="forum.html?category=academics" class="feature-card" style="text-decoration: none; color: inherit;">
+                    <div class="feature-icon">📚</div>
+                    <h3>Academics</h3>
+                    <p>Get help with classes, study tips, research opportunities, and academic advice.</p>
+                </a>
+                
+                <a href="forum.html?category=career" class="feature-card" style="text-decoration: none; color: inherit;">
+                    <div class="feature-icon">💼</div>
+                    <h3>Career Preparation</h3>
+                    <p>Discuss internships, job searches, networking, and career planning.</p>
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="forum.html" class="btn btn-primary" style="font-size: 1.1em; padding: 15px 40px;">Browse All Posts</a>
             </div>
         </div>
     </section>
@@ -477,7 +529,7 @@
     <section class="how-it-works" id="how-it-works">
         <div class="steps-container">
             <h2 class="section-title">How It Works</h2>
-            <p class="section-subtitle">Getting started is easy. Find your perfect mentor in 4 simple steps.</p>
+            <p class="section-subtitle">Choose your path: Get matched with a personal mentor in 4 steps, or jump straight into our community forum</p>
             
             <div class="steps-grid">
                 <div class="step-card">
@@ -510,8 +562,8 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-content">
-            <h2>Ready to Find Your Mentor?</h2>
-            <p>Join the growing community of UVA students helping each other succeed.</p>
+            <h2>Ready to Connect with the UVA Community?</h2>
+            <p>Get personalized mentorship or join the conversation in our community forum. Your choice!</p>
             <a href="signin.html" class="btn btn-secondary" style="font-size: 1.2em; padding: 15px 40px;">Get Started Now</a>
         </div>
     </section>
