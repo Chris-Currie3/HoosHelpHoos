@@ -74,6 +74,113 @@
             background: #c46200;
         }
 
+        /* Success Notification */
+        .success-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #28a745;
+            z-index: 10000;
+            display: none;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .success-notification.show {
+            display: block;
+        }
+
+        .success-notification .close-notif {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .success-notification .close-notif:hover {
+            color: #333;
+        }
+
+        .success-notification h3 {
+            color: #28a745;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .success-notification p {
+            color: #555;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+
+        .success-notification strong {
+            color: #232D4B;
+        }
+
+        /* Meetings Section */
+        .meetings-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .meetings-title {
+            color: #232D4B;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .meeting-card {
+            background: linear-gradient(135deg, rgba(35, 45, 75, 0.05) 0%, rgba(229, 114, 0, 0.05) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #E57200;
+            transition: transform 0.2s;
+        }
+
+        .meeting-card:hover {
+            transform: translateX(5px);
+        }
+
+        .meeting-card p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .meeting-card strong {
+            color: #232D4B;
+        }
+
+        .no-meetings {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
         .matches-section {
             margin-top: 30px;
         }
@@ -251,11 +358,6 @@
             animation: slideIn 0.3s;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
         .close-modal {
             color: #aaa;
             float: right;
@@ -364,6 +466,12 @@
             .mentor-name {
                 font-size: 1.5em;
             }
+
+            .success-notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -380,12 +488,30 @@
             <button class="logout-btn" id="logoutBtn">Sign Out</button>
         </div>
 
+        <!-- Upcoming Meetings Section -->
+        <div class="meetings-section">
+            <h2 class="meetings-title">📅 My Upcoming Meetings</h2>
+            <div id="meetingsList">
+                <p class="no-meetings">Loading your meetings...</p>
+            </div>
+        </div>
+
         <div class="matches-section">
             <h2 class="section-title">Your Top 3 Mentor Matches</h2>
             <div id="mentorsList">
                 <div class="loading">Finding your perfect mentors...</div>
             </div>
         </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="successNotification" class="success-notification">
+        <button class="close-notif" onclick="closeNotification()">&times;</button>
+        <h3>✅ Meeting Scheduled!</h3>
+        <p><strong>Mentor:</strong> <span id="notifMentorName"></span></p>
+        <p><strong>Date:</strong> <span id="notifDate"></span></p>
+        <p><strong>Time:</strong> <span id="notifTime"></span></p>
+        <p style="margin-top: 15px; color: #28a745; font-weight: 600;">Your meeting has been added to "My Upcoming Meetings" above!</p>
     </div>
 
     <!-- Scheduling Modal -->
@@ -407,5 +533,11 @@
 
     <!-- JavaScript -->
     <script type="module" src="js/mentee-dashboard.js"></script>
+    <script>
+        // Global function to close notification
+        function closeNotification() {
+            document.getElementById('successNotification').classList.remove('show');
+        }
+    </script>
 </body>
 </html>

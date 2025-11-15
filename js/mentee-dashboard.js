@@ -1,7 +1,7 @@
 // Mentee Dashboard Module
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getFirestore, doc, getDoc, collection, getDocs, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, doc, getDoc, collection, getDocs, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { firebaseConfig } from './firebase-config.js';
 import { findTopMatches } from './matching-algorithm.js';
 
@@ -40,11 +40,14 @@ async function loadUserData(userId) {
         
         if (userDoc.exists()) {
             const userData = userDoc.data();
-            currentMenteeData = { id: userId, ...userData }; // Store for later use
+            currentMenteeData = { id: userId, ...userData };
             
             // Display user info
             document.getElementById('userName').textContent = userData.name;
             document.getElementById('userMajor').textContent = userData.major;
+            
+            // Display meetings
+            displayMeetings(userData.meetings || []);
             
             // Find and display matches
             await findMatches(userData);
@@ -57,10 +60,48 @@ async function loadUserData(userId) {
     }
 }
 
+// Display meetings
+function displayMeetings(meetings) {
+    const meetingsList = document.getElementById('meetingsList');
+    
+    if (!meetings || meetings.length === 0) {
+        meetingsList.innerHTML = '<p class="no-meetings">No upcoming meetings scheduled yet. Book a meeting with a mentor below!</p>';
+        return;
+    }
+    
+    // Filter for future meetings and sort by date
+    const now = new Date();
+    const upcomingMeetings = meetings
+        .filter(m => new Date(m.date) >= now)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    if (upcomingMeetings.length === 0) {
+        meetingsList.innerHTML = '<p class="no-meetings">No upcoming meetings scheduled yet. Book a meeting with a mentor below!</p>';
+        return;
+    }
+    
+    meetingsList.innerHTML = upcomingMeetings.map(meeting => {
+        const date = new Date(meeting.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        
+        return `
+            <div class="meeting-card">
+                <p><strong>👤 Mentor:</strong> ${meeting.mentorName}</p>
+                <p><strong>📧 Email:</strong> ${meeting.mentorEmail}</p>
+                <p><strong>📅 Date:</strong> ${formattedDate}</p>
+                <p><strong>🕐 Time:</strong> ${meeting.time}</p>
+            </div>
+        `;
+    }).join('');
+}
+
 // Find mentor matches
 async function findMatches(menteeData) {
     try {
-        // Get all mentors from Firestore
         const usersSnapshot = await getDocs(collection(db, 'users'));
         const mentors = [];
 
@@ -74,10 +115,7 @@ async function findMatches(menteeData) {
             }
         });
 
-        // Use matching algorithm to find top 3 matches
         const topMatches = findTopMatches(menteeData, mentors, 3);
-
-        // Display matches
         displayMatches(topMatches);
     } catch (error) {
         console.error('Error finding matches:', error);
@@ -129,7 +167,7 @@ function displayMatches(matches) {
                 📅 Schedule a Meeting
             </button>
             
-            <button class="contact-btn" onclick="contactMentor('${mentor.email}', '${mentor.name}')">
+            <button class="contact-btn" data-mentor-email="${mentor.email}" data-mentor-name="${mentor.name}">
                 ✉️ Email ${mentor.name.split(' ')[0]}
             </button>
         `;
@@ -141,19 +179,42 @@ function displayMatches(matches) {
     document.querySelectorAll('.schedule-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const mentorId = e.target.dataset.mentorId;
-            const mentorName = e.target.dataset.mentorName;
             const mentor = matches.find(m => m.id === mentorId);
             openSchedulingModal(mentor);
         });
     });
+
+    // Add click handlers for contact buttons - shows email in alert
+    document.querySelectorAll('.contact-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const email = e.target.dataset.mentorEmail;
+            const name = e.target.dataset.mentorName;
+            alert(`📧 ${name}'s Email:\n\n${email}\n\nYou can copy this email address and reach out to them directly!`);
+        });
+    });
 }
 
-// Contact mentor function (exposed globally)
-window.contactMentor = function(email, name) {
-    const subject = encodeURIComponent('HoosHelpHoos - Mentorship Request');
-    const body = encodeURIComponent(`Hi ${name},\n\nI found your profile on HoosHelpHoos and would love to connect with you as a mentor!\n\nBest regards`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-};
+// Show success notification on page
+function showSuccessNotification(mentorName, date, time) {
+    const notification = document.getElementById('successNotification');
+    const dateObj = new Date(date);
+    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    document.getElementById('notifMentorName').textContent = mentorName;
+    document.getElementById('notifDate').textContent = formattedDate;
+    document.getElementById('notifTime').textContent = time;
+    
+    notification.classList.add('show');
+    
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 8000);
+}
 
 // Scheduling Modal Functions
 function openSchedulingModal(mentor) {
@@ -168,11 +229,9 @@ function openSchedulingModal(mentor) {
     mentorNameSpan.textContent = mentor.name;
     confirmBtn.disabled = true;
     
-    // Display availability
     if (mentor.availability && Object.keys(mentor.availability).length > 0) {
         let html = '<div class="availability-grid">';
         
-        // Sort dates
         const sortedDates = Object.keys(mentor.availability).sort();
         
         sortedDates.forEach(date => {
@@ -206,19 +265,14 @@ function openSchedulingModal(mentor) {
         html += '</div>';
         availabilityContainer.innerHTML = html;
         
-        // Add click handlers to time slots
         document.querySelectorAll('.time-slot-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Deselect all
                 document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
-                
-                // Select this one
                 e.target.classList.add('selected');
                 selectedTimeSlot = {
                     date: e.target.dataset.date,
                     time: e.target.dataset.time
                 };
-                
                 confirmBtn.disabled = false;
             });
         });
@@ -234,7 +288,6 @@ document.getElementById('closeModal').addEventListener('click', () => {
     document.getElementById('schedulingModal').style.display = 'none';
 });
 
-// Close modal when clicking outside
 window.addEventListener('click', (event) => {
     const modal = document.getElementById('schedulingModal');
     if (event.target === modal) {
@@ -244,14 +297,18 @@ window.addEventListener('click', (event) => {
 
 // Confirm booking
 document.getElementById('confirmBooking').addEventListener('click', async () => {
-    if (!selectedTimeSlot || !selectedMentor) return;
+    if (!selectedTimeSlot || !selectedMentor) {
+        alert('Please select a time slot first!');
+        return;
+    }
+    
+    const confirmBtn = document.getElementById('confirmBooking');
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Booking...';
     
     try {
-        const confirmBtn = document.getElementById('confirmBooking');
-        confirmBtn.disabled = true;
-        confirmBtn.textContent = 'Booking...';
+        console.log('Starting booking process...');
         
-        // Create meeting object
         const meeting = {
             mentorId: selectedMentor.id,
             mentorName: selectedMentor.name,
@@ -265,28 +322,59 @@ document.getElementById('confirmBooking').addEventListener('click', async () => 
             createdAt: new Date().toISOString()
         };
         
-        // Add to mentee's meetings
-        await updateDoc(doc(db, 'users', currentMenteeData.id), {
-            meetings: arrayUnion(meeting)
+        // Get mentee's current data
+        const menteeRef = doc(db, 'users', currentMenteeData.id);
+        const menteeDoc = await getDoc(menteeRef);
+        
+        if (!menteeDoc.exists()) {
+            throw new Error('Mentee document not found');
+        }
+        
+        const menteeData = menteeDoc.data();
+        const menteeMeetings = menteeData.meetings || [];
+        
+        await updateDoc(menteeRef, {
+            meetings: [...menteeMeetings, meeting]
         });
         
-        // Add to mentor's meetings
-        await updateDoc(doc(db, 'users', selectedMentor.id), {
-            meetings: arrayUnion(meeting)
+        console.log('Added meeting to mentee');
+        
+        // Get mentor's current data
+        const mentorRef = doc(db, 'users', selectedMentor.id);
+        const mentorDoc = await getDoc(mentorRef);
+        
+        if (!mentorDoc.exists()) {
+            throw new Error('Mentor document not found');
+        }
+        
+        const mentorData = mentorDoc.data();
+        const mentorMeetings = mentorData.meetings || [];
+        
+        await updateDoc(mentorRef, {
+            meetings: [...mentorMeetings, meeting]
         });
+        
+        console.log('Added meeting to mentor');
         
         // Close modal
         document.getElementById('schedulingModal').style.display = 'none';
         
-        // Show success message
-        alert(`✅ Meeting scheduled with ${selectedMentor.name} on ${new Date(selectedTimeSlot.date).toLocaleDateString()} at ${selectedTimeSlot.time}!`);
+        // Show success notification
+        showSuccessNotification(selectedMentor.name, selectedTimeSlot.date, selectedTimeSlot.time);
+        
+        // Refresh meetings list
+        currentMenteeData.meetings = [...menteeMeetings, meeting];
+        displayMeetings(currentMenteeData.meetings);
+        
+        // Reset button
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Confirm Booking';
+        
+    } catch (error) {
+        console.error('Detailed error booking meeting:', error);
+        alert(`❌ Failed to schedule meeting.\n\nError: ${error.message}\n\nPlease check:\n1. You're signed in\n2. The mentor exists in the system\n3. Your internet connection\n4. Firestore security rules allow updates\n\nCheck the console for more details.`);
         
         confirmBtn.disabled = false;
         confirmBtn.textContent = 'Confirm Booking';
-    } catch (error) {
-        console.error('Error booking meeting:', error);
-        alert('Failed to schedule meeting. Please try again.');
-        document.getElementById('confirmBooking').disabled = false;
-        document.getElementById('confirmBooking').textContent = 'Confirm Booking';
     }
 });
