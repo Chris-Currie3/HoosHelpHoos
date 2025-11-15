@@ -19,7 +19,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         await loadUserData(user.uid);
     } else {
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     }
 });
 
@@ -27,7 +27,7 @@ onAuthStateChanged(auth, async (user) => {
 document.getElementById('logoutBtn').addEventListener('click', async () => {
     try {
         await signOut(auth);
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } catch (error) {
         console.error('Logout error:', error);
     }
@@ -53,7 +53,7 @@ async function loadUserData(userId) {
             await findMatches(userData);
         } else {
             console.error('User data not found');
-            window.location.href = 'index.html';
+            window.location.href = 'signin.html';
         }
     } catch (error) {
         console.error('Error loading user data:', error);
