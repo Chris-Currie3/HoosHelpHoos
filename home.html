@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - UVA Mentorship Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #232D4B;
+            border: 2px solid #232D4B;
+        }
+
+        .btn-secondary:hover {
+            background: #232D4B;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content {
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content .highlight {
+            color: #E57200;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .hero-image {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uva-logo {
+            width: 200px;
+            height: 200px;
+            background: #232D4B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .uva-logo::before {
+            content: "UVA";
+            color: white;
+            font-size: 4em;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .uva-logo::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: #E57200;
+        }
+
+        .logo-text {
+            color: #232D4B;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .logo-subtitle {
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: white;
+            padding: 80px 40px;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #232D4B;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .feature-card {
+            padding: 30px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            border-left: 5px solid #E57200;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #232D4B;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            padding: 60px 40px;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background: white;
+            padding: 80px 40px;
+        }
+
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .step-card h3 {
+            color: #232D4B;
+            margin-bottom: 15px;
+        }
+
+        .step-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        footer {
+            background: #232D4B;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5em;
+            }
+
+            .features-grid,
+            .stats-container,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
+            <div class="nav-buttons">
+                <a href="signin.html" class="btn btn-secondary">Sign In</a>
+                <a href="signin.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Perfect <span class="highlight">Mentor</span> at UVA</h1>
+            <p>Connect with experienced students who share your interests, understand your goals, and can help guide your journey at the University of Virginia.</p>
+            <div class="hero-buttons">
+                <a href="signin.html" class="btn btn-primary">Join Now</a>
+                <a href="#how-it-works" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="uva-logo"></div>
+            <div class="logo-text">HoosHelpHoos</div>
+            <p class="logo-subtitle">Building the UVA Community</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose HoosHelpHoos?</h2>
+            <p class="section-subtitle">Our smart matching system connects you with mentors who truly understand your UVA experience</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Matching</h3>
+                    <p>Our algorithm considers your major, interests, Greek life involvement, study habits, and lifestyle to find mentors who truly fit.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Easy Scheduling</h3>
+                    <p>Book meetings with one click. No more back-and-forth emails to find a time that works for both of you.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🏛️</div>
+                    <h3>UVA-Focused</h3>
+                    <p>Built specifically for UVA students, understanding Greek life, clubs, academics, and the unique culture of our community.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Personalized Guidance</h3>
+                    <p>Get advice tailored to your specific situation from mentors who've been exactly where you are.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Real Connections</h3>
+                    <p>Build meaningful relationships that extend beyond academics into career, social life, and personal growth.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Safe & Secure</h3>
+                    <p>UVA email verification ensures you're connecting with real students in a trusted environment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">UVA Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">Smart</div>
+                <div class="stat-label">Matching Algorithm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1-Click</div>
+                <div class="stat-label">Meeting Scheduling</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="steps-container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Getting started is easy. Find your perfect mentor in 4 simple steps.</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up with your UVA email and tell us about your major and interests.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Take Survey</h3>
+                    <p>Answer 5 quick questions about your UVA lifestyle and preferences.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>View Matches</h3>
+                    <p>See your top 3 mentor matches with compatibility scores and details.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Schedule Meeting</h3>
+                    <p>Pick a time that works and start your mentorship journey!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Find Your Mentor?</h2>
+            <p>Join the growing community of UVA students helping each other succeed.</p>
+            <a href="signin.html" class="btn btn-secondary" style="font-size: 1.2em; padding: 15px 40px;">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 HoosHelpHoos. Built by UVA students, for UVA students. 🔶</p>
+    </footer>
+</body>
+</html>
