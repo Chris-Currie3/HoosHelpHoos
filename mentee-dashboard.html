@@ -202,6 +202,153 @@
             box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
         }
 
+        .schedule-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #E57200;
+            border: 2px solid #E57200;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .schedule-btn:hover {
+            background: #E57200;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 20px;
+        }
+
+        .close-modal:hover {
+            color: #E57200;
+        }
+
+        .modal-title {
+            color: #232D4B;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            clear: both;
+        }
+
+        .availability-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .date-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #E57200;
+        }
+
+        .date-label {
+            color: #232D4B;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .time-slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .time-slot-btn {
+            padding: 10px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #232D4B;
+        }
+
+        .time-slot-btn:hover {
+            border-color: #E57200;
+            background: #fff5f0;
+        }
+
+        .time-slot-btn.selected {
+            background: #E57200;
+            color: white;
+            border-color: #E57200;
+        }
+
+        .confirm-booking-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .confirm-booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .confirm-booking-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .loading {
             text-align: center;
             color: white;
@@ -238,6 +385,23 @@
             <div id="mentorsList">
                 <div class="loading">Finding your perfect mentors...</div>
             </div>
+        </div>
+    </div>
+
+    <!-- Scheduling Modal -->
+    <div id="schedulingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="modal-title">Schedule a Meeting</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Meeting with: <strong id="modalMentorName"></strong>
+            </p>
+            
+            <div id="availabilityContainer">
+                <p style="color: #666;">Loading available times...</p>
+            </div>
+
+            <button class="confirm-booking-btn" id="confirmBooking" disabled>Confirm Booking</button>
         </div>
     </div>
 

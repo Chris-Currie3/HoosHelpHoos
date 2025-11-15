@@ -9,8 +9,9 @@
 export function calculateMatchScore(mentee, mentor) {
     let score = 0;
     const weights = {
-        major: 40,
-        interests: 60
+        major: 30,
+        interests: 45,
+        personality: 25
     };
 
     // Major matching (exact match or related)
@@ -35,7 +36,52 @@ export function calculateMatchScore(mentee, mentor) {
     const interestScore = (matchingInterests / Math.max(menteeInterests.length, 1)) * weights.interests;
     score += interestScore;
 
+    // Personality/workstyle matching (if surveys exist)
+    if (mentee.survey && mentor.survey) {
+        const personalityScore = calculatePersonalityMatch(mentee.survey, mentor.survey);
+        score += personalityScore * weights.personality;
+    }
+
     return Math.min(Math.round(score), 100);
+}
+
+/**
+ * Calculate personality compatibility from survey responses
+ * @param {Object} menteeSurvey - Mentee's survey responses (1-5 scale)
+ * @param {Object} mentorSurvey - Mentor's survey responses (1-5 scale)
+ * @returns {number} Compatibility score from 0-1
+ */
+function calculatePersonalityMatch(menteeSurvey, mentorSurvey) {
+    // Survey questions and how we score them
+    const questions = [
+        'greekLife',         // Similar scores = good match (lifestyle compatibility)
+        'clubInvolvement',   // Similar scores = good match (activity level)
+        'nightlife',         // Similar scores = good match (social habits)
+        'academicFocus',     // Similar scores = good match (priorities)
+        'studyHabits'        // Similar scores = good match (work style)
+    ];
+
+    let totalDifference = 0;
+    let questionsAnswered = 0;
+
+    questions.forEach(question => {
+        if (menteeSurvey[question] && mentorSurvey[question]) {
+            // Calculate difference (0-4 range, where 0 is perfect match)
+            const difference = Math.abs(menteeSurvey[question] - mentorSurvey[question]);
+            totalDifference += difference;
+            questionsAnswered++;
+        }
+    });
+
+    if (questionsAnswered === 0) return 0.5; // Neutral score if no survey data
+
+    // Convert to 0-1 scale (smaller difference = better match)
+    // Max possible difference per question is 4, so max total is 4 * questionsAnswered
+    const maxPossibleDifference = 4 * questionsAnswered;
+    const normalizedDifference = totalDifference / maxPossibleDifference;
+    
+    // Invert so that smaller difference = higher score
+    return 1 - normalizedDifference;
 }
 
 /**

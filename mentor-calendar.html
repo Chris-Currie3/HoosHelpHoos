@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - Set Your Availability</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .calendar-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            color: #232D4B;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .day-header {
+            text-align: center;
+            font-weight: bold;
+            color: #232D4B;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .day-slot {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 150px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .day-slot:hover {
+            border-color: #E57200;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.2);
+        }
+
+        .day-slot.selected {
+            border-color: #E57200;
+            background: linear-gradient(135deg, rgba(35, 45, 75, 0.05) 0%, rgba(229, 114, 0, 0.05) 100%);
+        }
+
+        .day-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #232D4B;
+            margin-bottom: 10px;
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .time-slot {
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9em;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .time-slot:hover {
+            background: #E57200;
+            color: white;
+        }
+
+        .time-slot.selected {
+            background: #E57200;
+            color: white;
+            font-weight: bold;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #232D4B;
+        }
+
+        .quick-btn:hover {
+            border-color: #E57200;
+            background: #fff5f0;
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .logout-btn {
+            background: #E57200;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c46200;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .view-dashboard-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #E57200;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-dashboard-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
+            <p style="color: #666; font-size: 1.1em;">Set Your Availability</p>
+            <p style="color: #232D4B; font-weight: 600; margin-top: 10px;">Welcome, <span id="mentorName">Mentor</span>!</p>
+            <button class="logout-btn" id="logoutBtn">Sign Out</button>
+            <br>
+            <a href="mentor-dashboard.html" class="view-dashboard-link">View My Dashboard</a>
+        </div>
+
+        <div class="calendar-section">
+            <h2 class="section-title">📅 Your Availability</h2>
+            <p class="section-subtitle">Select the days and times you're available to meet with mentees over the next month</p>
+
+            <div id="successMessage" class="success-message">
+                ✅ Your availability has been saved successfully!
+            </div>
+
+            <div class="quick-actions">
+                <button class="quick-btn" id="selectWeekdays">Select All Weekdays</button>
+                <button class="quick-btn" id="selectWeekends">Select All Weekends</button>
+                <button class="quick-btn" id="clearAll">Clear All</button>
+            </div>
+
+            <div id="calendarContainer">
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar will be generated here -->
+                </div>
+            </div>
+
+            <button class="save-btn" id="saveBtn">Save Availability</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { firebaseConfig } from './js/firebase-config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let availability = {}; // Format: { "2024-11-20": ["10:00 AM", "2:00 PM"], ... }
+
+        // Time slot options
+        const timeSlots = [
+            "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+            "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
+        ];
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserData(user.uid);
+                generateCalendar();
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'index.html';
+        });
+
+        async function loadUserData(userId) {
+            const userDoc = await getDoc(doc(db, 'users', userId));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                document.getElementById('mentorName').textContent = userData.name;
+                
+                // Load existing availability if any
+                if (userData.availability) {
+                    availability = userData.availability;
+                }
+            }
+        }
+
+        function generateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            // Add day headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+
+            // Generate next 30 days
+            const today = new Date();
+            for (let i = 1; i <= 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateString = date.toISOString().split('T')[0];
+
+                const daySlot = document.createElement('div');
+                daySlot.className = 'day-slot';
+                daySlot.dataset.date = dateString;
+
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = date.getDate();
+                daySlot.appendChild(dayNumber);
+
+                const timeSlotsContainer = document.createElement('div');
+                timeSlotsContainer.className = 'time-slots';
+
+                // Add a few key time slots for display
+                ['10:00 AM', '2:00 PM', '4:00 PM'].forEach(time => {
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = 'time-slot';
+                    timeSlot.textContent = time;
+                    timeSlot.dataset.time = time;
+                    
+                    // Check if already selected
+                    if (availability[dateString] && availability[dateString].includes(time)) {
+                        timeSlot.classList.add('selected');
+                    }
+
+                    timeSlot.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleTimeSlot(dateString, time, timeSlot);
+                    });
+
+                    timeSlotsContainer.appendChild(timeSlot);
+                });
+
+                daySlot.appendChild(timeSlotsContainer);
+                calendarGrid.appendChild(daySlot);
+            }
+        }
+
+        function toggleTimeSlot(date, time, element) {
+            if (!availability[date]) {
+                availability[date] = [];
+            }
+
+            const index = availability[date].indexOf(time);
+            if (index > -1) {
+                availability[date].splice(index, 1);
+                element.classList.remove('selected');
+                if (availability[date].length === 0) {
+                    delete availability[date];
+                }
+            } else {
+                availability[date].push(time);
+                element.classList.add('selected');
+            }
+        }
+
+        // Quick action buttons
+        document.getElementById('selectWeekdays').addEventListener('click', () => {
+            const today = new Date();
+            for (let i = 1; i <= 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dayOfWeek = date.getDay();
+                
+                if (dayOfWeek > 0 && dayOfWeek < 6) { // Monday to Friday
+                    const dateString = date.toISOString().split('T')[0];
+                    availability[dateString] = ['10:00 AM', '2:00 PM', '4:00 PM'];
+                }
+            }
+            generateCalendar();
+        });
+
+        document.getElementById('selectWeekends').addEventListener('click', () => {
+            const today = new Date();
+            for (let i = 1; i <= 30; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dayOfWeek = date.getDay();
+                
+                if (dayOfWeek === 0 || dayOfWeek === 6) { // Saturday and Sunday
+                    const dateString = date.toISOString().split('T')[0];
+                    availability[dateString] = ['10:00 AM', '2:00 PM'];
+                }
+            }
+            generateCalendar();
+        });
+
+        document.getElementById('clearAll').addEventListener('click', () => {
+            availability = {};
+            generateCalendar();
+        });
+
+        // Save availability
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            try {
+                await updateDoc(doc(db, 'users', currentUser.uid), {
+                    availability: availability,
+                    availabilityUpdated: new Date().toISOString()
+                });
+
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            } catch (error) {
+                console.error('Error saving availability:', error);
+                alert('Failed to save availability. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

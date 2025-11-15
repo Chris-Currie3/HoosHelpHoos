@@ -77,15 +77,12 @@ signUpForm.addEventListener('submit', async (e) => {
             major: major,
             role: role,
             interests: interests,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            surveyCompleted: false
         });
 
-        // Redirect based on role
-        if (role === 'mentee') {
-            window.location.href = 'mentee-dashboard.html';
-        } else {
-            window.location.href = 'mentor-dashboard.html';
-        }
+        // Redirect to survey page to complete profile
+        window.location.href = 'survey.html';
     } catch (error) {
         console.error('Sign up error:', error);
         showError(error.message);

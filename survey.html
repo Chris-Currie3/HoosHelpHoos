@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - Complete Your Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .survey-intro {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #E57200;
+        }
+
+        .survey-intro h2 {
+            color: #232D4B;
+            margin-bottom: 10px;
+        }
+
+        .survey-intro p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .question-group {
+            margin-bottom: 30px;
+        }
+
+        .question-label {
+            color: #232D4B;
+            font-weight: 600;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .scale-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .scale-label {
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+            flex: 1;
+        }
+
+        .scale-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .scale-option {
+            position: relative;
+        }
+
+        .scale-option input[type="radio"] {
+            appearance: none;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .scale-option input[type="radio"]:hover {
+            border-color: #E57200;
+            transform: scale(1.1);
+        }
+
+        .scale-option input[type="radio"]:checked {
+            border-color: #E57200;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+        }
+
+        .scale-option input[type="radio"]:checked::after {
+            content: attr(data-value);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .scale-option label {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #232D4B;
+            white-space: nowrap;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .scale-option input[type="radio"] {
+                width: 40px;
+                height: 40px;
+            }
+
+            .scale-options {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
+            <p style="color: #666; font-size: 1.05em;">Help us find your perfect match!</p>
+        </div>
+
+        <div class="survey-intro">
+            <h2>Quick Compatibility Survey</h2>
+            <p>Answer these 5 questions to help us match you with compatible mentors/mentees. Rate each on a scale of 1-5.</p>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <form id="surveyForm">
+            <!-- Question 1: Greek Life -->
+            <div class="question-group">
+                <label class="question-label">
+                    1. How involved are you in Greek life?
+                </label>
+                <div class="scale-options">
+                    <div class="scale-option">
+                        <label>1</label>
+                        <input type="radio" name="greekLife" value="1" data-value="1" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>2</label>
+                        <input type="radio" name="greekLife" value="2" data-value="2" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>3</label>
+                        <input type="radio" name="greekLife" value="3" data-value="3" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>4</label>
+                        <input type="radio" name="greekLife" value="4" data-value="4" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>5</label>
+                        <input type="radio" name="greekLife" value="5" data-value="5" required>
+                    </div>
+                </div>
+                <div class="scale-labels">
+                    <span class="scale-label">Not involved at all</span>
+                    <span class="scale-label">Very active member</span>
+                </div>
+            </div>
+
+            <!-- Question 2: Club Involvement -->
+            <div class="question-group">
+                <label class="question-label">
+                    2. How many clubs/organizations are you actively involved in?
+                </label>
+                <div class="scale-options">
+                    <div class="scale-option">
+                        <label>1</label>
+                        <input type="radio" name="clubInvolvement" value="1" data-value="1" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>2</label>
+                        <input type="radio" name="clubInvolvement" value="2" data-value="2" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>3</label>
+                        <input type="radio" name="clubInvolvement" value="3" data-value="3" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>4</label>
+                        <input type="radio" name="clubInvolvement" value="4" data-value="4" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>5</label>
+                        <input type="radio" name="clubInvolvement" value="5" data-value="5" required>
+                    </div>
+                </div>
+                <div class="scale-labels">
+                    <span class="scale-label">0-1 clubs</span>
+                    <span class="scale-label">5+ clubs</span>
+                </div>
+            </div>
+
+            <!-- Question 3: Nightlife -->
+            <div class="question-group">
+                <label class="question-label">
+                    3. How often do you participate in nightlife activities?
+                </label>
+                <div class="scale-options">
+                    <div class="scale-option">
+                        <label>1</label>
+                        <input type="radio" name="nightlife" value="1" data-value="1" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>2</label>
+                        <input type="radio" name="nightlife" value="2" data-value="2" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>3</label>
+                        <input type="radio" name="nightlife" value="3" data-value="3" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>4</label>
+                        <input type="radio" name="nightlife" value="4" data-value="4" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>5</label>
+                        <input type="radio" name="nightlife" value="5" data-value="5" required>
+                    </div>
+                </div>
+                <div class="scale-labels">
+                    <span class="scale-label">Rarely/Never</span>
+                    <span class="scale-label">Multiple times a week</span>
+                </div>
+            </div>
+
+            <!-- Question 4: Academic Priority -->
+            <div class="question-group">
+                <label class="question-label">
+                    4. How would you rate your academic focus/priority?
+                </label>
+                <div class="scale-options">
+                    <div class="scale-option">
+                        <label>1</label>
+                        <input type="radio" name="academicFocus" value="1" data-value="1" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>2</label>
+                        <input type="radio" name="academicFocus" value="2" data-value="2" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>3</label>
+                        <input type="radio" name="academicFocus" value="3" data-value="3" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>4</label>
+                        <input type="radio" name="academicFocus" value="4" data-value="4" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>5</label>
+                        <input type="radio" name="academicFocus" value="5" data-value="5" required>
+                    </div>
+                </div>
+                <div class="scale-labels">
+                    <span class="scale-label">Balanced/Social focus</span>
+                    <span class="scale-label">Academics first priority</span>
+                </div>
+            </div>
+
+            <!-- Question 5: Study Habits -->
+            <div class="question-group">
+                <label class="question-label">
+                    5. What are your typical study habits?
+                </label>
+                <div class="scale-options">
+                    <div class="scale-option">
+                        <label>1</label>
+                        <input type="radio" name="studyHabits" value="1" data-value="1" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>2</label>
+                        <input type="radio" name="studyHabits" value="2" data-value="2" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>3</label>
+                        <input type="radio" name="studyHabits" value="3" data-value="3" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>4</label>
+                        <input type="radio" name="studyHabits" value="4" data-value="4" required>
+                    </div>
+                    <div class="scale-option">
+                        <label>5</label>
+                        <input type="radio" name="studyHabits" value="5" data-value="5" required>
+                    </div>
+                </div>
+                <div class="scale-labels">
+                    <span class="scale-label">Study in groups/socially</span>
+                    <span class="scale-label">Study alone/quietly</span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Complete Profile</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, updateDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { firebaseConfig } from './js/firebase-config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let userRole = null;
+
+        // Check if user is authenticated
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                // Get user role
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    userRole = userDoc.data().role;
+                }
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+
+        const surveyForm = document.getElementById('surveyForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        surveyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+
+            try {
+                // Collect survey responses
+                const survey = {
+                    greekLife: parseInt(document.querySelector('input[name="greekLife"]:checked').value),
+                    clubInvolvement: parseInt(document.querySelector('input[name="clubInvolvement"]:checked').value),
+                    nightlife: parseInt(document.querySelector('input[name="nightlife"]:checked').value),
+                    academicFocus: parseInt(document.querySelector('input[name="academicFocus"]:checked').value),
+                    studyHabits: parseInt(document.querySelector('input[name="studyHabits"]:checked').value)
+                };
+
+                // Update user document with survey responses
+                await updateDoc(doc(db, 'users', currentUser.uid), {
+                    survey: survey,
+                    surveyCompleted: true,
+                    surveyCompletedAt: new Date().toISOString()
+                });
+
+                // Redirect based on role
+                if (userRole === 'mentee') {
+                    window.location.href = 'mentee-dashboard.html';
+                } else {
+                    window.location.href = 'mentor-calendar.html';
+                }
+            } catch (error) {
+                console.error('Survey submission error:', error);
+                showError('Failed to save survey. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Profile';
+            }
+        });
+    </script>
+</body>
+</html>
