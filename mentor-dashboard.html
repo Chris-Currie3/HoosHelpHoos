@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - Mentor Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .icon {
+            font-size: 5em;
+            margin: 30px 0;
+        }
+
+        .welcome {
+            color: #232D4B;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #555;
+        }
+
+        .user-info-item {
+            margin: 8px 0;
+        }
+
+        .user-info-label {
+            font-weight: bold;
+            color: #232D4B;
+        }
+
+        .message {
+            background: linear-gradient(135deg, rgba(35, 45, 75, 0.1) 0%, rgba(229, 114, 0, 0.1) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #E57200;
+        }
+
+        .message h2 {
+            color: #232D4B;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .message p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: #E57200;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid #E57200;
+        }
+
+        .info-box h3 {
+            color: #232D4B;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .interests-display {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .interest-tag {
+            background: #E57200;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            .logo {
+                font-size: 2em;
+            }
+
+            .welcome {
+                font-size: 1.6em;
+            }
+
+            .icon {
+                font-size: 4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
+        
+        <div class="icon">🎓</div>
+        
+        <h1 class="welcome">Welcome, <span id="mentorName">Mentor</span>!</h1>
+        
+        <div class="user-info">
+            <div class="user-info-item">
+                <span class="user-info-label">Email:</span> <span id="mentorEmail">...</span>
+            </div>
+            <div class="user-info-item">
+                <span class="user-info-label">Major:</span> <span id="mentorMajor">...</span>
+            </div>
+            <div class="user-info-item">
+                <span class="user-info-label">Role:</span> Mentor
+            </div>
+        </div>
+
+        <div id="interestsContainer"></div>
+
+        <div class="message">
+            <h2>Thank You for Being a Mentor! 🌟</h2>
+            <p>
+                Your profile has been successfully created and added to our mentor database. 
+                You're now part of the <span class="highlight">HoosHelpHoos community</span> helping 
+                UVA students find guidance and support.
+            </p>
+            <p>
+                We will <span class="highlight">contact you via email</span> when mentees express 
+                interest in connecting with you. You'll receive their contact information and can 
+                reach out to schedule your first mentorship meeting.
+            </p>
+            
+            <div class="info-box">
+                <h3>What happens next?</h3>
+                <p>
+                    ✉️ You'll receive email notifications when mentees want to connect<br>
+                    📊 Your profile is being matched with students based on interests and major<br>
+                    🤝 We'll facilitate the initial introduction between you and your mentees
+                </p>
+            </div>
+        </div>
+
+        <button class="logout-btn" id="logoutBtn">Sign Out</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="js/mentor-dashboard.js"></script>
+</body>
+</html>

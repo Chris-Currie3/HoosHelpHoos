@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoosHelpHoos - Sign In</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            color: #232D4B;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .logo-accent {
+            color: #E57200;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            background: #f8f9fa;
+            border-left: 4px solid #E57200;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .description h2 {
+            color: #232D4B;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .description p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .features li {
+            color: #555;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #E57200;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #232D4B;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #E57200;
+        }
+
+        .role-select {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .role-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option:hover {
+            border-color: #E57200;
+            background: #fff5f0;
+        }
+
+        .role-option input[type="radio"] {
+            display: none;
+        }
+
+        .role-option input[type="radio"]:checked + label {
+            color: #E57200;
+            font-weight: bold;
+        }
+
+        .role-option.selected {
+            border-color: #E57200;
+            background: #fff5f0;
+        }
+
+        .role-option label {
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toggle-form {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .toggle-form a {
+            color: #E57200;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .logo {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Hoos<span class="logo-accent">Help</span>Hoos</div>
+            <p class="tagline">Connecting UVA Students with the Perfect Mentor</p>
+        </div>
+
+        <div class="description">
+            <h2>What We Do</h2>
+            <p>HoosHelpHoos uses intelligent matching to pair UVA students with experienced mentors based on your interests, major, and goals.</p>
+            <ul class="features">
+                <li>Smart matching algorithm weighted by your preferences</li>
+                <li>Connect with mentors in your field of study</li>
+                <li>Build meaningful relationships across the UVA community</li>
+            </ul>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- Sign In Form -->
+        <form id="signInForm">
+            <div class="form-group">
+                <label for="signInEmail">UVA Email</label>
+                <input type="email" id="signInEmail" name="email" placeholder="abc3def@virginia.edu" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signInPassword">Password</label>
+                <input type="password" id="signInPassword" name="password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Sign In</button>
+            <div class="toggle-form">
+                Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
+            </div>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signUpForm" class="hidden">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signUpEmail">UVA Email</label>
+                <input type="email" id="signUpEmail" name="email" placeholder="abc3def@virginia.edu" required>
+            </div>
+
+            <div class="form-group">
+                <label for="signUpPassword">Password</label>
+                <input type="password" id="signUpPassword" name="password" minlength="6" required>
+            </div>
+
+            <div class="form-group">
+                <label for="major">Major</label>
+                <input type="text" id="major" name="major" required>
+            </div>
+
+            <div class="form-group">
+                <label>I want to be a:</label>
+                <div class="role-select">
+                    <div class="role-option" data-role="mentee">
+                        <input type="radio" id="mentee" name="role" value="mentee" checked>
+                        <label for="mentee">Mentee</label>
+                    </div>
+                    <div class="role-option" data-role="mentor">
+                        <input type="radio" id="mentor" name="role" value="mentor">
+                        <label for="mentor">Mentor</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="interests">Interests (comma-separated)</label>
+                <input type="text" id="interests" name="interests" placeholder="e.g., AI, web development, research" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Create Account</button>
+            <div class="toggle-form">
+                Already have an account? <a href="#" id="showSignIn">Sign In</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+x/* Shared Styles for HoosHelpHoos */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+    min-height: 100vh;
+}
+
+/* Logo Styles */
+.logo {
+    color: #232D4B;
+    font-size: 2.5em;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.logo-accent {
+    color: #E57200;
+}
+
+/* Button Styles */
+.submit-btn, .logout-btn, .contact-btn {
+    padding: 15px;
+    background: linear-gradient(135deg, #232D4B 0%, #E57200 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-btn:hover, .logout-btn:hover, .contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 114, 0, 0.4);
+}
+
+.submit-btn:active, .logout-btn:active, .contact-btn:active {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #232D4B;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #E57200;
+}
+
+/* Interest Tags */
+.interest-tag {
+    background: #E57200;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+}
+
+.interests-tags, .interests-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+/* UVA Colors */
+:root {
+    --uva-blue: #232D4B;
+    --uva-orange: #E57200;
+}
