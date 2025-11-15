@@ -54,6 +54,11 @@ function showError(message) {
     }, 5000);
 }
 
+// Validate UVA email - REQUIRED for signup
+function isValidUVAEmail(email) {
+    return email.toLowerCase().endsWith('@virginia.edu');
+}
+
 // Sign Up
 signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -64,6 +69,12 @@ signUpForm.addEventListener('submit', async (e) => {
     const major = document.getElementById('major').value;
     const role = document.querySelector('input[name="role"]:checked').value;
     const interests = document.getElementById('interests').value.split(',').map(i => i.trim());
+
+    // VALIDATE UVA EMAIL - Must end with @virginia.edu
+    if (!isValidUVAEmail(email)) {
+        showError('⚠️ Please use a valid UVA email address (@virginia.edu)');
+        return;
+    }
 
     try {
         // Create user account
