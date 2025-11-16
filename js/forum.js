@@ -10,23 +10,34 @@ const db = getFirestore(app);
 
 let currentUser = null;
 let currentUserData = null;
+let currentViewingPost = null;
 let allPosts = [];
 let currentCategory = 'all';
 let searchTerm = '';
 
 // Check authentication
+// Check authentication
 onAuthStateChanged(auth, async (user) => {
+    const loggedOutMsg = document.getElementById("loggedOutMessage");
+
     if (user) {
         currentUser = user;
         await loadUserData(user.uid);
+
+        document.getElementById("userName").textContent = currentUserData?.name || user.email;
+
+        if (loggedOutMsg) loggedOutMsg.style.display = "none";
     } else {
-        currentUser = null; // viewing as guest
+        currentUser = null; // guest mode
         document.getElementById("userName").textContent = "Guest";
+
+        if (loggedOutMsg) loggedOutMsg.style.display = "block";
     }
 
-    // ALWAYS load posts for both guests + signed-in users
+    // ALWAYS load posts after auth check
     await loadPosts();
 });
+
 
 
 // Load user data
@@ -309,10 +320,97 @@ async function toggleAgreeDisagree(postId, action) {
     }
 }
 
+function loadReplies(post) {
+    const repliesContainer = document.getElementById("repliesContainer");
+
+    if (!post.replies || post.replies.length === 0) {
+        repliesContainer.innerHTML = `
+            <p style="color:#888; text-align:center; margin-top:10px;">
+                No replies yet. Be the first to reply!
+            </p>`;
+        return;
+    }
+
+    repliesContainer.innerHTML = post.replies
+        .map(reply => `
+            <div class="reply-card">
+                <strong>${reply.authorName}</strong>
+                <p>${reply.content}</p>
+                <span style="font-size:0.8em; color:#666;">${new Date(reply.timestamp).toLocaleString()}</span>
+            </div>
+        `)
+        .join("");
+}
+
 // View individual post (we'll create this page next)
-window.viewPost = function(postId) {
-    window.location.href = `post.html?id=${postId}`;
+window.viewPost = function (postId) {
+    const post = allPosts.find(p => p.id === postId);
+    if (!post) return;
+
+    currentViewingPost = post;
+
+    document.getElementById("modalPostTitle").textContent = post.title;
+    document.getElementById("modalPostContent").textContent = post.content;
+    document.getElementById("modalPostCategory").textContent = post.category;
+
+    loadReplies(post);
+
+    const modal = document.getElementById("postViewModal");
+    modal.style.display = "block";
+
+    // Attach listeners NOW that modal exists
+    document.getElementById("submitReplyBtn").onclick = submitReply;
+    document.getElementById("closePostView").onclick = () => {
+        modal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
 };
+
+
+async function submitReply() {
+    if (!currentUser) {
+        window.location.href = "signin.html?next=forum.html";
+        return;
+    }
+
+    const replyInput = document.getElementById("replyContent");
+    const replyText = replyInput.value.trim();
+
+    if (!replyText) return;
+
+    const postRef = doc(db, "forumPosts", currentViewingPost.id);
+
+    const newReply = {
+        authorId: currentUser.uid,
+        authorName: currentUserData?.name || "Anonymous",
+        content: replyText,
+        timestamp: new Date().toISOString()
+    };
+
+    await updateDoc(postRef, {
+        replies: arrayUnion(newReply)
+    });
+
+    replyInput.value = "";
+
+    // Reload posts and update visible modal
+    await loadPosts();
+    currentViewingPost = allPosts.find(p => p.id === currentViewingPost.id);
+    loadReplies(currentViewingPost);
+}
+// Attach reply listener AFTER modal is opened
+document.getElementById("submitReplyBtn").onclick = submitReply;
+
+// Attach close button listener
+document.getElementById("closePostView").onclick = () => {
+    document.getElementById("postViewModal").style.display = "none";
+};
+
 
 // Get time ago string
 function getTimeAgo(date) {
